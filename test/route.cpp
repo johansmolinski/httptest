@@ -3,7 +3,9 @@
 #include <gtest/gtest.h>
 #include <stdio.h>
 
+extern "C" {
 #include "../api.h"
+}
 
 // The fixture for testing class Foo.
 class RouteTest : public ::testing::Test {

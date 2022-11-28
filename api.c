@@ -12,29 +12,33 @@ void files_get_one(HTTPReqMessage *req, HTTPResMessage *res) {
 struct UrlComponents *new_url_components(const char *method, const char *route, const char *command, const char *querystring) {
 	struct UrlComponents *c;
 
-	if (!(c = (struct UrlComponents *)malloc(sizeof(struct UrlComponents)))) {
+	if (!(c = malloc(sizeof(*c)))) {
 		return NULL;
 	};
 
-	if (!(c->method = (char *)malloc(sizeof(strlen(method)+1)))) {
+    const size_t method_len = strlen(method)+1;
+	if (!(c->method = malloc(method_len))) {
 		free(c);
 		return NULL;
 	}
 
-	if (!(c->route = (char *)malloc(sizeof(strlen(route)+1)))) {
+    const size_t route_len = strlen(route)+1;
+	if (!(c->route = malloc(route_len))) {
 		free(c->method);
 		free(c);
 		return NULL;
 	}
 
-	if (!(c->command = (char *)malloc(sizeof(strlen(route)+1)))) {
+    const size_t command_len = strlen(command)+1;
+	if (!(c->command = malloc(command_len))) {
 		free(c->route);
 		free(c->method);
 		free(c);
 		return NULL;
 	}
 
-	if (!(c->querystring = (char *)malloc(sizeof(strlen(route)+1)))) {
+    const size_t querystring_len = strlen(querystring)+1;
+	if (!(c->querystring = malloc(querystring_len))) {
 		free(c->command);
 		free(c->route);
 		free(c->method);
@@ -42,10 +46,10 @@ struct UrlComponents *new_url_components(const char *method, const char *route, 
 		return NULL;
 	}
 
-	strncpy(c->method, method, MAX_STR_LEN);
-	strncpy(c->route, route, MAX_STR_LEN);
-	strncpy(c->command, command, MAX_STR_LEN);
-	strncpy(c->querystring, querystring, MAX_STR_LEN);
+	strncpy(c->method, method, method_len);
+	strncpy(c->route, route, route_len);
+	strncpy(c->command, command, command_len);
+	strncpy(c->querystring, querystring, querystring_len);
 
 	printf("Created url components %x, %x, %x, %x, %x\n", c, c->method, c->command, c->route, c->querystring);
 	return c;
